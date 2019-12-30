@@ -10,12 +10,16 @@ test("renders without crashing", () => {
   ReactDOM.render(<Button />, div);
 });
 
-test("it renders button correctly", () => {
-  const { getByTestId } = render(<Button label="click me please"></Button>);
-  expect(getByTestId("button")).toHaveTextContent("click me please");
-});
-
-test("it renders button correctly", () => {
-  const { getByTestId } = render(<Button label="save"></Button>);
-  expect(getByTestId("button")).toHaveTextContent("save");
+test("matched snapshot", () => {
+  const { /*container,*/ getByTestId } = render(
+    <Button label="cancel"></Button>
+  );
+  expect(getByTestId("button")).toMatchInlineSnapshot(
+    `
+    <h1
+    data-testid="button"
+    >
+    texto
+    </h1>`
+  );
 });
