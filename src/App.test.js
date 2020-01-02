@@ -7,4 +7,5 @@ jest.mock("axios");
 
 test("App renders without crashing", () => {
   render(<App text={"Title"}></App>);
+  expect("hola");
 });
