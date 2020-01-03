@@ -1,5 +1,5 @@
-import axios from 'axios'
+import axios from "axios";
 
-export const API = 'https://jsonplaceholder.typicode.com'
+export const API = "https://jsonplaceholder.typicode.com";
 
-export const fetchData = query => await axios.get(API+query)
+export const fetchData = async query => await axios.get(API + query);
