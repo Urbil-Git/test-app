@@ -5,26 +5,28 @@ import mockAxios from "axios";
 
 //afterEach(cleanup);
 
-jest.mock("axios", () => ({
-  get: () =>
-    Promise.resolve({
+/*jest.mock("axios", () => jest.fn().mockImplementation(() => ({
+  get: () => Promise.resolve({
+    data: { name: "Leanne Graham", email: "Sincere@april.biz" }
+  })
+})));*/
+
+jest.mock('axios')
+
+beforeAll(() => {
+  mockAxios.mockImplementation(() => ({
+    get: () => Promise.resolve({
       data: { name: "Leanne Graham", email: "Sincere@april.biz" }
     })
-}));
-
-//jest.setTimeout(10000);
+  }))
+})
 
 test("test when data is loading", () => {
   const { getByText } = render(<FetchComponent />);
-  const loading = getByText("Loading");
-  //expect(mockAxios).toHaveBeenCalledTimes(0);
-  expect(loading).toBeInTheDocument();
+  expect(getByText("Loading")).toBeInTheDocument();
 });
 
-/*test("test get method is called", () => {
-  //const response = { name: "Leanne Graham", email: "Sincere@april.biz" };
-  mockAxios.mockImplementationOnce(() => ({
-    get: () => Promise.resolve(response)
-  }));
-  expect(mockAxios.get).toHaveBeenCalledTimes(1);
-});*/
+test("test get method is called", () => {
+  console.log("mockAxios: ", mockAxios.get);
+  expect(mockAxios.get).toHaveBeenCalledTimes(1)
+});
