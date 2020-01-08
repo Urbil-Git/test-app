@@ -1,32 +1,36 @@
 import React from "react";
 import { render, wait, cleanup } from "@testing-library/react";
-import FetchComponent, { fetchUserName } from "./FetchComponent";
-import mockAxios from "axios";
+import FetchComponent from "./FetchComponent";
+import { fetchUserName as fetchUserNameMock, API } from './FetchUserName'
 
-//afterEach(cleanup);
+jest.mock("./FetchUserName")
 
-/*jest.mock("axios", () => jest.fn().mockImplementation(() => ({
-  get: () => Promise.resolve({
-    data: { name: "Leanne Graham", email: "Sincere@april.biz" }
-  })
-})));*/
-
-jest.mock('axios')
-
-beforeAll(() => {
-  mockAxios.mockImplementation(() => ({
-    get: () => Promise.resolve({
-      data: { name: "Leanne Graham", email: "Sincere@april.biz" }
-    })
-  }))
+beforeEach(() => {
+  fetchUserNameMock.mockResolvedValue({data: {name: "Leanne Graham", email: "Sincere@april.biz"}})
 })
 
-test("test when data is loading", () => {
-  const { getByText } = render(<FetchComponent />);
-  expect(getByText("Loading")).toBeInTheDocument();
-});
+afterEach(() => {
+  fetchUserNameMock.mockClear()
+  cleanup
+})
 
-test("test get method is called", () => {
-  console.log("mockAxios: ", mockAxios.get);
-  expect(mockAxios.get).toHaveBeenCalledTimes(1)
-});
+test("FetchComponent renders showing loading message", () => {
+  const { getByTestId } = render(<FetchComponent/>)
+  expect(getByTestId('loadingdiv')).toHaveTextContent('Loading')
+})
+
+test("FetchComponent calls fetchUserName function once", () => {
+  render(<FetchComponent/>)
+  expect(fetchUserNameMock).toHaveBeenCalledTimes(1)
+})
+
+test("FetchComponent calls fetchUserName function with correct parameters", () => {
+  render(<FetchComponent/>)
+  expect(fetchUserNameMock).toHaveBeenCalledWith("/users/1")
+})
+
+test("FetchComponent mounts and renders fetched data", async() => {
+  const {getByTestId} = render(<FetchComponent/>)
+  await wait(() => getByTestId("datadiv"))
+})
+
