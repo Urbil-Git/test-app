@@ -1,32 +1,28 @@
 import React from "react";
-import { render, wait, cleanup } from "@testing-library/react";
-import FetchComponent, { fetchUserName } from "./FetchComponent";
-import mockAxios from "axios";
+import { render, cleanup } from "@testing-library/react";
+import FetchComponent from "./FetchComponent";
+import { fetchUserName } from "./FetchUserName";
 
-//afterEach(cleanup);
+const response = {
+  data: { name: "Leanne Graham", email: "Sincere@april.biz" }
+};
 
-/*jest.mock("axios", () => jest.fn().mockImplementation(() => ({
-  get: () => Promise.resolve({
-    data: { name: "Leanne Graham", email: "Sincere@april.biz" }
-  })
-})));*/
+jest.mock("./FetchUserName");
 
-jest.mock('axios')
+beforeEach(() => {
+  fetchUserName.mockClear();
+  fetchUserName.mockResolvedValueOnce(response);
+});
 
-beforeAll(() => {
-  mockAxios.mockImplementation(() => ({
-    get: () => Promise.resolve({
-      data: { name: "Leanne Graham", email: "Sincere@april.biz" }
-    })
-  }))
-})
+afterEach(cleanup);
 
 test("test when data is loading", () => {
+  fetchUserName.mockResolvedValueOnce(response);
   const { getByText } = render(<FetchComponent />);
   expect(getByText("Loading")).toBeInTheDocument();
 });
 
-test("test get method is called", () => {
-  console.log("mockAxios: ", mockAxios.get);
-  expect(mockAxios.get).toHaveBeenCalledTimes(1)
+test("test get method is called", async () => {
+  render(<FetchComponent />);
+  expect(fetchUserName).toBeCalledTimes(1);
 });
