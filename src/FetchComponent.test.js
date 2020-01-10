@@ -1,4 +1,5 @@
 import React from "react";
+
 import { render, wait, cleanup } from "@testing-library/react";
 import FetchComponent from "./FetchComponent";
 import { fetchUserName as fetchUserNameMock, API } from './FetchUserName'
@@ -33,4 +34,3 @@ test("FetchComponent mounts and renders fetched data", async() => {
   const {getByTestId} = render(<FetchComponent/>)
   await wait(() => getByTestId("datadiv"))
 })
-
