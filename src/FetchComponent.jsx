@@ -2,7 +2,7 @@ import axios from "axios";
 import React from "react";
 import { fetchUserName } from "./FetchUserName";
 
-const API = "https://jsonplaceholder.typicode.com";
+import { fetchUserName } from './FetchUserName'
 
 class FetchComponent extends React.Component {
   constructor() {
@@ -34,7 +34,7 @@ class FetchComponent extends React.Component {
 
   render() {
     if (this.state.loading) return <div data-testid="loadingdiv">Loading</div>;
-    else if (this.state.error !== "") return <div>{this.state.error}</div>;
+    else if (this.state.error !== "") return <div data-testid="errordiv">{this.state.error}</div>;
     else {
       return (
         <div data-testid="datadiv">

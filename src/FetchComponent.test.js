@@ -1,28 +1,36 @@
 import React from "react";
-import { render, cleanup } from "@testing-library/react";
+
+import { render, wait, cleanup } from "@testing-library/react";
 import FetchComponent from "./FetchComponent";
-import { fetchUserName } from "./FetchUserName";
+import { fetchUserName as fetchUserNameMock, API } from './FetchUserName'
 
-const response = {
-  data: { name: "Leanne Graham", email: "Sincere@april.biz" }
-};
-
-jest.mock("./FetchUserName");
+jest.mock("./FetchUserName")
 
 beforeEach(() => {
-  fetchUserName.mockClear();
-  fetchUserName.mockResolvedValueOnce(response);
-});
+  fetchUserNameMock.mockResolvedValue({data: {name: "Leanne Graham", email: "Sincere@april.biz"}})
+})
 
-afterEach(cleanup);
+afterEach(() => {
+  fetchUserNameMock.mockClear()
+  cleanup
+})
 
-test("test when data is loading", () => {
-  fetchUserName.mockResolvedValueOnce(response);
-  const { getByText } = render(<FetchComponent />);
-  expect(getByText("Loading")).toBeInTheDocument();
-});
+test("FetchComponent renders showing loading message", () => {
+  const { getByTestId } = render(<FetchComponent/>)
+  expect(getByTestId('loadingdiv')).toHaveTextContent('Loading')
+})
 
-test("test get method is called", async () => {
-  render(<FetchComponent />);
-  expect(fetchUserName).toBeCalledTimes(1);
-});
+test("FetchComponent calls fetchUserName function once", () => {
+  render(<FetchComponent/>)
+  expect(fetchUserNameMock).toHaveBeenCalledTimes(1)
+})
+
+test("FetchComponent calls fetchUserName function with correct parameters", () => {
+  render(<FetchComponent/>)
+  expect(fetchUserNameMock).toHaveBeenCalledWith("/users/1")
+})
+
+test("FetchComponent mounts and renders fetched data", async() => {
+  const {getByTestId} = render(<FetchComponent/>)
+  await wait(() => getByTestId("datadiv"))
+})
