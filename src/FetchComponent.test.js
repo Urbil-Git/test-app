@@ -47,7 +47,3 @@ test("FetchComponent mounts and fails to fetch data", async() => {
     //expect(getByTestId("errordiv")).toBeInTheDocument()
   }
 })
-
-test("another stupid test", () => {
-  
-})
