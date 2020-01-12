@@ -19,7 +19,3 @@ test("axios get function is called once", async() => {
 test("another test", () => {
 
 })
-
-test("another test that doesn't fail", () => {
-    
-})
