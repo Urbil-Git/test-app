@@ -1,1 +1,1 @@
-console.log("this file will create conflicts while merging")
+console.log("This file is so dangerous I must destroy it")
