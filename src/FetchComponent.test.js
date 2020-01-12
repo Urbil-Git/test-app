@@ -48,10 +48,6 @@ test("FetchComponent mounts and fails to fetch data", async() => {
   }
 })
 
-test("stupid test", () => {
-
-})
-
 test("another stupid test", () => {
   
 })
