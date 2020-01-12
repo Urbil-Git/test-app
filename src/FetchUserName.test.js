@@ -15,7 +15,3 @@ test("axios get function is called once", async() => {
     await fetchUserName("/users/1")
     expect(mockGet).toHaveBeenCalledTimes(1)
 })
-
-test("another test", () => {
-
-})
