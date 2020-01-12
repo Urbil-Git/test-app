@@ -7,7 +7,7 @@ import { fetchUserName as fetchUserNameMock, API } from './FetchUserName'
 jest.mock("./FetchUserName")
 
 beforeEach(() => {
-  fetchUserNameMock.mockResolvedValue({data: {name: "Leanne Graham", email: "Sincere@april.biz"}})
+  fetchUserNameMock.mockResolvedValue({name: "Leanne Graham", email: "Sincere@april.biz"})
 })
 
 afterEach(() => {
@@ -34,3 +34,17 @@ test("FetchComponent mounts and renders fetched data", async() => {
   const {getByTestId} = render(<FetchComponent/>)
   await wait(() => getByTestId("datadiv"))
 })
+
+test("FetchComponent mounts and fails to fetch data", async() => {
+  expect.assertions(1)
+  fetchUserNameMock.mockRejectedValue({error: {response: {data: "Error", status: 500}}})
+  const {getByTestId} = render(<FetchComponent/>)
+  try {
+    await wait(() => getByTestId("errordiv"))
+    expect(getByTestId("errordiv")).toBeInTheDocument()
+  }
+  catch(expection){
+    //expect(getByTestId("errordiv")).toBeInTheDocument()
+  }
+})
+
